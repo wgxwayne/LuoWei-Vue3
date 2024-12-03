@@ -3,7 +3,7 @@
   <div class="app-container home">
     <el-row :gutter="20">
       <el-col :sm="24" :lg="24">
-        <h1 class="welcome-message">欢迎来到小危的工具系统</h1>
+        <h1 class="welcome-message">欢迎来到xiaowei的工具系统</h1>
         <!-- 其他内容 -->
       </el-col>
     </el-row>
