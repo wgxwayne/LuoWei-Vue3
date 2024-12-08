@@ -1,4 +1,3 @@
-<!-- HTML部分 -->
 <template>
   <div class="tool-page">
     <!-- 搜索框 -->
@@ -13,15 +12,33 @@
 
     <!-- 工具卡片容器 -->
     <div class="tool-container">
-      <el-card
-          v-for="tool in filteredTools"
-          :key="tool.name"
-          class="tool-card"
-          @click.native="navigateTo(tool.link)"
-      >
-        <h3>{{ tool.name }}</h3>
-        <p>{{ tool.description }}</p>
-      </el-card>
+      <!-- 工具类卡片 -->
+      <h2>工具类</h2>
+      <div class="card-row">
+        <el-card
+            v-for="tool in filteredTools"
+            :key="tool.name"
+            class="tool-card"
+            @click.native="navigateTo(tool.link)"
+        >
+          <h3>{{ tool.name }}</h3>
+          <p>{{ tool.description }}</p>
+        </el-card>
+      </div>
+
+      <!-- 学习类卡片 -->
+      <h2>学习教程类</h2>
+      <div class="card-row">
+        <el-card
+            v-for="learningTool in filteredLearningTools"
+            :key="learningTool.name"
+            class="tool-card"
+            @click.native="navigateTo(learningTool.link)"
+        >
+          <h3>{{ learningTool.name }}</h3>
+          <p>{{ learningTool.description }}</p>
+        </el-card>
+      </div>
     </div>
   </div>
 </template>
@@ -36,11 +53,19 @@ export default {
         { name: 'SQL压缩/格式化', description: '压缩和格式化SQL语句', link: 'https://www.zxgj.cn/g/sqlformat' },
         { name: '在线ASCII码表查看', description: '在线ASCII码表查看', link: 'https://fly63.com/tool/ascii' },
         { name: 'BASE64加解密工具', description: 'BASE64加解密工具', link: 'https://base64.supfree.net/' },
-        { name: 'md5加密工具', description: 'md5加密工具', link: 'https://www.zxgj.cn/g/md5' },
-        { name: 'ASCII编码解码', description: 'ASCII编码解码', link: 'https://www.matools.com/code-convert-ascii' },
-        { name: 'ElementUI表单生成器', description: 'ElementUI表单生成器', link: 'https://tools.bqrdh.com/form-generator/#/' },
-        { name: 'ElementUI官方表单', description: 'ElementUI表单生成器', link: 'https://element.eleme.cn/#/zh-CN/component/select' },
+        { name: '在线文本对比', description: '在线文本对比', link: 'https://fly63.com/tool/textdiff/' },
+        { name: 'ASCII编码解码', description: '本工具主要用于代码中的本地字符的Unicode转换，可以解决编程中遇到的乱码问题。', link: 'https://www.matools.com/code-convert-ascii' },
+        { name: 'ElementUI表单生成器', description: 'ElementUI第三方表单生成器', link: 'https://tools.bqrdh.com/form-generator/#/' },
+        { name: 'ElementUI官方表单', description: 'ElementUI官方表单', link: 'https://element.eleme.cn/#/zh-CN/component/select' },
+        { name: '进制转换工具', description: '进制转换工具提供二进制、八进制、十进制和十六进制之间的任意互转。', link: 'https://www.zxgj.cn/g/jinzhi'},
+        { name: 'md5加密', description: '本工具提供md5在线加密，md5加密理论上是一种不可逆的加密算法。', link: 'https://www.zxgj.cn/g/md5'}
         // 你可以继续添加更多的工具
+      ],
+      learningGuide: [
+        { name: 'Vue.js 教程', description: 'Vue.js 官方文档', link: 'https://vuejs.org/v2/guide/' },
+        { name: 'JavaScript 教程', description: 'JavaScript 教程', link: 'https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide' },
+        { name: 'React 教程', description: 'React 官方文档', link: 'https://reactjs.org/docs/getting-started.html' },
+        // 你可以继续添加更多的学习资源
       ]
     };
   },
@@ -48,6 +73,11 @@ export default {
     // 计算属性，用于根据搜索查询过滤工具
     filteredTools() {
       return this.tools.filter(tool =>
+          tool.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    },
+    filteredLearningTools() {
+      return this.learningGuide.filter(tool =>
           tool.name.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     }
@@ -89,7 +119,6 @@ export default {
   box-shadow: 0 0 10px rgba(64, 158, 255, 0.5); /* 阴影效果 */
 }
 
-
 /* 使用深度选择器 */
 .search-box >>> .el-input__inner {
   background: transparent !important;
@@ -127,8 +156,24 @@ export default {
 .tool-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center; /* 居中对齐 */
   align-items: flex-start; /* 卡片顶部对齐 */
+  flex-direction: column; /* 确保标题和卡片垂直排列 */
+}
+
+.tool-container h2 {
+  text-align: left;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.card-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* 卡片左对齐 */
+  align-items: flex-start; /* 卡片顶部对齐 */
+  width: 100%;
 }
 
 .tool-card {
@@ -138,7 +183,7 @@ export default {
   transition: all 0.3s;
   box-sizing: border-box;
   min-height: 100px; /* 设置卡片最小高度 */
-  height: 100px;
+  height: 200px;
   display: flex;
   flex-direction: column;
   justify-content: center; /* 内容在卡片内垂直居中 */
